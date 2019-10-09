@@ -1,0 +1,108 @@
+<html>
+    <head>
+        <title>
+            Microsoft Todo
+        </title>
+        <link rel="stylesheet" href="css/icon.css"/>
+        <link rel="stylesheet" href="css/todo.css"/>
+    </head>
+    <body>
+        <div class="container">
+            <div class="main">
+                <div class="menu">
+                    <div class="main-menu">
+                        <button class="main-button">
+                            <img src="images/icon1.png" class="icon-image"/>
+                        </button>
+                    </div>
+                    <div class="logo">
+                        <label>To Do</label>
+                    </div>
+                </div>
+                <div class="searchBox">
+                    <i class="icon fontIcon ms-Icon ms-Icon--Search iconSize-24" aria-hidden="true"></i>
+                    <input type="search" placeholder="Search"/>
+                </div>
+                <div class="left-navbar">
+                    <div class="setting">
+                        <button class="main-button">
+                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Settings iconSize-24" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="setting">
+                        <button class="main-button">
+                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Settings iconSize-24" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="mainpage">
+                <div class="sidebar">
+                    <div class="side-bar">
+                        <div class="myday">
+                            <button class="myday-button" onclick="openNav()">
+                                <i id="menu" class="icon fontIcon ms-Icon ms-Icon--GlobalNavButton iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button" onclick="myday()">
+                                <i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button" onclick="important()">
+                                <i class="icon fontIcon ms-Icon ms-Icon--FavoriteStar iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <i id="user" class="icon fontIcon ms-Icon ms-Icon--Contact iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <i id="home" class="icon fontIcon ms-Icon ms-Icon--Home iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button-newlist" onclick="openNav()">
+                                <i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i>
+                            </button>
+                        </div>    
+                    </div>
+                    <div id="titleDiv" class="title">
+                        <div class="myday" onclick="myday()"> 
+                            <p id="myday">My Day</p>
+                        </div>
+                        <div class="myday" onclick="important()">
+                            <p id="important">Important </p>
+                        </div>
+                        <div class="myday">
+                            <p>Planned</p>
+                        </div>
+                        <div class="myday">
+                            <p>Assigned to Me</p>
+                        </div>
+                        <div class="myday">
+                            <p>Tasks</p>
+                        </div>
+                        <ul id="list">
+                        </ul>
+                        <div class="myday">
+                            <input id="newlist" type="text" placeholder="New list"/>
+                        </div>
+                    </div>
+                    <div class="centerPage">
+                        <p>Tasks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="js/todo.js"></script>
+    </body>
+</html>
