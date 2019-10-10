@@ -40,7 +40,7 @@
                 <div class="sidebar">
                     <div class="side-bar">
                         <div class="myday">
-                            <button class="myday-button" onclick="openNav()">
+                            <button class="myday-button" id="open-side-bar">
                                 <i id="menu" class="icon fontIcon ms-Icon ms-Icon--GlobalNavButton iconSize-24" aria-hidden="true"></i>
                             </button>
                         </div>
@@ -91,15 +91,20 @@
                         <div class="myday">
                             <p>Tasks</p>
                         </div>
-                        <ul id="list">
-                        </ul>
+                        <div id="new-lists"> 
+                            <ul id="list"></ul>
+                        </div>
                         <div class="myday">
                             <input id="newlist" type="text" placeholder="New list"/>
                         </div>
                     </div>
-                    <div class="centerPage">
-                        <p>Tasks</p>
+                    <div class="centerPage" id="updateListName">
+                        <p id="listName"></p>
                     </div>
+                    <div id="editor">
+                            <textarea id="ta1" name="ta1" rows="10" cols="50"></textarea><br />
+                            <input name="submit" id="submit" type="button" value="Edit Text" onclick="doEdit()" />
+                        </div>
                 </div>
             </div>
         </div>
