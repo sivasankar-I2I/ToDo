@@ -8,7 +8,7 @@
     </head>
     <body>
         <div class="container">
-            <div class="main">
+            <div class="nav-bar">
                 <div class="menu">
                     <div class="main-menu">
                         <button class="main-button">
@@ -37,74 +37,62 @@
                 </div>
             </div>
             <div class="mainpage">
-                <div class="sidebar">
-                    <div class="side-bar">
-                        <div class="myday">
-                            <button class="myday-button" id="open-side-bar">
-                                <i id="menu" class="icon fontIcon ms-Icon ms-Icon--GlobalNavButton iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button" onclick="myday()">
-                                <i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button" onclick="important()">
-                                <i class="icon fontIcon ms-Icon ms-Icon--FavoriteStar iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button">
-                                <i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button">
-                                <i id="user" class="icon fontIcon ms-Icon ms-Icon--Contact iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button">
-                                <i id="home" class="icon fontIcon ms-Icon ms-Icon--Home iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button-newlist" onclick="openNav()">
-                                <i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i>
-                            </button>
-                        </div>    
+                <div class="sidebar" id="sidebar">
+                    <div class="myday">
+                        <button class="myday-button"  id="open-side-bar">
+                            <span><i id="menu" class="icon fontIcon ms-Icon ms-Icon--GlobalNavButton iconSize-24" aria-hidden="true"></i></span>
+                        </button>
                     </div>
-                    <div id="titleDiv" class="title">
-                        <div class="myday" onclick="myday()"> 
-                            <p id="myday">My Day</p>
-                        </div>
-                        <div class="myday" onclick="important()">
-                            <p id="important">Important </p>
-                        </div>
-                        <div class="myday">
-                            <p>Planned</p>
-                        </div>
-                        <div class="myday">
-                            <p>Assigned to Me</p>
-                        </div>
-                        <div class="myday">
-                            <p>Tasks</p>
-                        </div>
-                        <div id="new-lists"> 
-                            <ul id="list"></ul>
-                        </div>
-                        <div class="myday">
-                            <input id="newlist" type="text" placeholder="New list"/>
-                        </div>
+                    <div class="myday">
+                        <button class="myday-button" onclick="myday()">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                         <span><p id="myday">My Day</p></span>
                     </div>
+                    <div class="myday">
+                        <button class="myday-button" onclick="important()">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--FavoriteStar iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p id="important">Important </p></span>
+                    </div>
+                    <div class="myday">
+                        <button class="myday-button">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p>Planned</p></span>
+                    </div>
+                    <div class="myday">
+                        <button class="myday-button">
+                            <span><i id="user" class="icon fontIcon ms-Icon ms-Icon--Contact iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p>Assigned to Me</p></span>
+                    </div>
+                    <div class="myday">
+                        <button class="myday-button">
+                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Home iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                    <span><p>Tasks</p></span>
+                    </div>
+                    <div id="new-lists" > 
+                        <ul id="list" ></ul>
+                    </div>
+                    <div class="myday">
+                        <button class="myday-button" onclick="openNav()">
+                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><input id="newlist" type="text" placeholder="New list"/></span>
+                    </div>    
+                </div>
+                <div class="page" >
                     <div class="centerPage" id="updateListName">
                         <p id="listName"></p>
                     </div>
-                    <div id="editor">
-                            <textarea id="ta1" name="ta1" rows="10" cols="50"></textarea><br />
-                            <input name="submit" id="submit" type="button" value="Edit Text" onclick="doEdit()" />
-                        </div>
+                    <div id="new-lists"> 
+                        <ul><p id="subtasklist"> </p></ul>
+                    </div>
+                    <div class="sublist" id="sublist">
+                        <input type="text" id="tasks" placeholder="Add Tasks"/>
+                    </div>
                 </div>
             </div>
         </div>
