@@ -1,8 +1,8 @@
 
 
-document.getElementById("open-side-bar").addEventListener("click", openNav);
+document.getElementById("open-side-bar").addEventListener("click", toggleNavbar);
 
-function openNav() {
+function toggleNavbar() {
     if (document.getElementById("sidebar").style.width=="290px") {
         document.getElementById("sidebar").style.width="48px";
         document.getElementById("sidebar").style.width="48px";
@@ -34,12 +34,12 @@ var numberOfList = 0;
  * @param {*} id 
  */
 function displayLists(list, id) {
-    const text = `<li>
-                    <p id=${id} onclick="getId(id)">
+    let text = `<li>
+                    <p id=${id} onclick="getId(id)" class="list">
                     <i class="ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor" aria-hidden="true" ></i>
-                    ${list} </p>
+                    <span>${list}</span></p>
                   </li>`;
-    const position = "beforeend";
+    let position = "beforeend";
     document.getElementById("list").insertAdjacentHTML(position, text, id);
 }
 
@@ -48,22 +48,21 @@ function displayLists(list, id) {
  */
 const input = document.getElementById("newlist");
 input.addEventListener("keyup", function(){
+    let subTaskList = document.getElementById("subtasklist");
+    subTaskList.innerHTML = "";
     if(event.keyCode == 13) {
-        var listObject = {
-            name: "",
-            status: "",
-            id: "",
+        let listObject = {
+            name: input.value,
+            status: true,
+            id: ++numberOfList,
             subtask: []
         };
-        listObject.name = input.value;
-        listObject.id = ++numberOfList;
-        listObject.status = true;
         if(listObject.name) {
-            displayLists(listObject.name, listObject.id);
             LIST.push(listObject);
+            displayLists(listObject.name, listObject.id);
         }
         input.value = "";
-        document.getElementById("listName").textContent = listObject.name;
+        document.getElementById("listName").textContent = listObject.name+'...';
         listInfo = listObject;
     }
 });
@@ -72,11 +71,71 @@ input.addEventListener("keyup", function(){
  * Method used to get the list by click 
  */
 function getId(listId) {
-    for(var i=0, iLen=LIST.length; i<iLen; i++) {
+    for(let i=0; i<LIST.length; i++) {
         if(LIST[i].id == listId) {
-            document.getElementById("listName").textContent = LIST[i].name;
+            document.getElementById("listName").textContent = LIST[i].name+'...';
             getSublist(LIST[i].subtask);
             listInfo = LIST[i];        }
+    }
+}
+
+const tasks = document.getElementById("tasks");
+let subId = 0;
+let task;
+tasks.addEventListener("keyup", function(event) {
+    if(event.keyCode === 13) {
+        subtaskname = tasks.value;
+        taskId = ++subId;
+        let taskInfo = {
+            name: subtaskname,
+            subTaskId: taskId,
+            status: true,
+            steps: []
+        };
+        listInfo.subtask.push(taskInfo);
+        addsubtasks(subtaskname, taskId);
+        document.getElementById("subtask").textContent = tasks.value;
+        tasks.value = "";
+        task = listInfo.subtask;
+    }
+});
+
+function addsubtasks(subTaskName, id) {
+    let text = `<li id=${id} onclick="toggleStep(id)">
+                    <div  class ="disp-inline">
+                    <input type="checkbox" id=${id} onclick="taskDone(id)"/>
+                    <p id=${id} name="status" onclick="stepChild(id)">${subTaskName}</p>
+                    </div>
+                 </li>`
+    let position = "beforeend";
+    let subTaskList = document.getElementById("subtasklist");
+    subTaskList.insertAdjacentHTML(position, text);
+}
+
+function toggleStep(subId){
+    var x = document.getElementById("step-aside").style.width;
+    if(x == "0px"){
+        document.getElementById("step-aside").style.width ="360px";
+    } else {
+        document.getElementById("step-aside").style.width ="360px";
+        for(var j = 0;j<LIST.length;j++) {
+            for(var i = 0;i < LIST[j].subTask.length;i++){
+                if(LIST[j].subTask[i].subTaskId == subId){
+                    document.getElementById("stepAside").value =  LIST[j].subTask[i].name;
+                    document.getElementById("subtask-title-id").textContent = LIST[j].subTask[i].subTaskId;
+                }
+            }
+        }
+    }
+}
+
+function getSteps(id) {
+    
+    for(let l=0; l<listInfo.subtask.length; l++) {
+        console.log(listInfo);
+        if(listInfo.subTask[l].subTaskId == id) {
+            document.getElementById("subtask").textContent = listInfo.subtask.name;
+        }
     }
 }
 
@@ -84,58 +143,24 @@ function getSublist(subtasks) {
     let subTaskList = document.getElementById("subtasklist");
     subTaskList.innerHTML = "";
     for(let j=0; j<subtasks.length; j++) {
-        console.log(subtasks[j].name);
+        console.log(subtasks[j].name); 
         addsubtasks(subtasks[j].name);
     }
 }
 
-
-/*document.getElementById("updateListName").addEventListener("click", toggleEditor);
-
-function toggleEditor() {
-   var theText = document.getElementById('updateListName');
-   var theEditor = document.getElementById('ta1');
-   var editorArea = document.getElementById('editor');
-   var subject = theText.innerHTML;
-   theEditor.value = subject;
-   theText.style.display = 'none';
-   editorArea.style.display = 'inline';
-}
-
-function doEdit() {
-    var theText = document.getElementById('updateListName');
-    var theEditor = document.getElementById('ta1');
-    var editorArea = document.getElementById('editor');
-    var subject = theEditor.value;
-    theText.innerHTML= subject;
-    theText.style.display = 'inline';
-    editorArea.style.display = 'none';
- }*/
-
- /**
-  * Method to add subtasks
-  */
- 
-const tasks = document.getElementById("tasks");
-let subId = 0;
-tasks.addEventListener("keyup", function(event) {
-    if(event.keyCode === 13) {
-        subtaskname = tasks.value;
-        addsubtasks(subtaskname);
-        listInfo.subtask.push({
-            name: subtaskname,
-            subTaskId: ++subId
-        })
-        tasks.value = "";
+/* Method used to create the steps for the particular task  
+let stepId = 0;
+let step = document.getElementById("newSteps");
+input.addEventListener("keyup", function(){
+    if(event.keyCode == 13) {
+        let newStep = {
+            name: step.value,
+            status: true,
+            id: ++stepId
+        };
+        task.steps.push(newStep);
+        step.innerHTML="Next Step";
     }
-});
+});*/
 
-function addsubtasks(subtaskname) {
-    const text = `<li>
-                    <p id=${id}>
-                    ${subtaskname} </p>
-                  </li>`;
-    const position = "beforeend";
-    let subTaskList = document.getElementById("subtasklist");
-    subTaskList.insertAdjacentHTML(position, text);
-}
+

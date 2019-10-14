@@ -73,7 +73,7 @@
                         </button>
                     <span><p>Tasks</p></span>
                     </div>
-                    <div id="new-lists" > 
+                    <div id="new-lists" class="createlist"> 
                         <ul id="list" ></ul>
                     </div>
                     <div class="myday">
@@ -88,12 +88,21 @@
                         <p id="listName"></p>
                     </div>
                     <div id="new-lists"> 
-                        <ul><p id="subtasklist"> </p></ul>
+                        <ul><p id="subtasklist"></p></ul>
                     </div>
                     <div class="sublist" id="sublist">
                         <input type="text" id="tasks" placeholder="Add Tasks"/>
                     </div>
                 </div>
+                <aside class="step-div" id="step-aside">
+                <div>
+                    <input id="stepAside" type="text"/>
+                    <span class="id-visible" id="subtask-title-id"></span>
+                    <ul id="stepsList">
+                    </ul>
+                    <input id ="stepAdd" type="text" placeholder="Add step"/>
+                </div>
+                </aside>
             </div>
         </div>
         <script src="js/todo.js"></script>
