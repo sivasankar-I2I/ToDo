@@ -91,18 +91,23 @@
                         <ul><p id="subtasklist"></p></ul>
                     </div>
                     <div class="sublist" id="sublist">
-                        <input type="text" id="tasks" placeholder="Add Tasks"/>
+                        <input type="text" id="new-tasks" placeholder="Add Tasks"/>
                     </div>
                 </div>
-                <aside class="step-div" id="step-aside">
-                <div>
-                    <input id="stepAside" type="text"/>
-                    <span class="id-visible" id="subtask-title-id"></span>
-                    <ul id="stepsList">
-                    </ul>
-                    <input id ="stepAdd" type="text" placeholder="Add step"/>
+                <div class="finalDiv" id="step-aside">
+                    <div class="centerPage">
+                        <p id="taskName"></p>
+                    </div>
+                    <div id="new-Steps"> 
+                        <ul><p id="steps"></p></ul>
+                    </div>
+                    <div class="steps">
+                        <button class="taskbutton">
+                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <input  type="text" id="newStep" placeholder="Next Step"/>
+                    </div>    
                 </div>
-                </aside>
             </div>
         </div>
         <script src="js/todo.js"></script>

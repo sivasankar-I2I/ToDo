@@ -190,15 +190,35 @@ div#editor {
     margin-left: 35%;
 }
 
-.step-div{
+.finalDiv{
     margin-left: auto;
     float: right;
     width: 0;
     height:100%;
-    background-color:rgb(195, 199, 194); 
+    background-color:rgb(195, 199, 194);
     overflow-x: hidden;
     transition: 0.2s;
 }
-.id-visible{
-    visibility: hidden;
+
+.taskButton {
+    background-color: rgb(195, 199, 194);
+    width: 48px;
+    height: 48px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+.steps input{
+    width: 240px;
+    height: 48px;
+    border: none;
+    outline: none;
+    margin-top: 0px;
+    background-color: rgb(195, 199, 194);
+}
+.steps input::placeholder{
+    color: #0078d7;
+    font-size: 13.33px;
+    font-weight: 400;
+    line-height: 30px;
 }

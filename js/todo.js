@@ -1,7 +1,9 @@
 
 
 document.getElementById("open-side-bar").addEventListener("click", toggleNavbar);
-
+/**
+ * Method used to toggle the sidebar 
+ */
 function toggleNavbar() {
     if (document.getElementById("sidebar").style.width=="290px") {
         document.getElementById("sidebar").style.width="48px";
@@ -26,10 +28,11 @@ function important() {
 var LIST = [];
 var id;
 var listInfo;
+var taskInfo;
 var numberOfList = 0;
 
 /**
- *  Method used to display the list Name 
+ *  Method used to display the list Name in the sidebar
  * @param {*} list 
  * @param {*} id 
  */
@@ -44,18 +47,19 @@ function displayLists(list, id) {
 }
 
 /**
- * Method used to create the new list 
+ * Method used to create the new list and push it in the array
  */
 const input = document.getElementById("newlist");
 input.addEventListener("keyup", function(){
     let subTaskList = document.getElementById("subtasklist");
     subTaskList.innerHTML = "";
+    subTask = [];
     if(event.keyCode == 13) {
         let listObject = {
             name: input.value,
             status: true,
             id: ++numberOfList,
-            subtask: []
+            subTask: subTask
         };
         if(listObject.name) {
             LIST.push(listObject);
@@ -68,43 +72,53 @@ input.addEventListener("keyup", function(){
 });
 
 /**
- * Method used to get the list by click 
+ * Method used to get the list by using the listId
  */
 function getId(listId) {
     for(let i=0; i<LIST.length; i++) {
         if(LIST[i].id == listId) {
             document.getElementById("listName").textContent = LIST[i].name+'...';
-            getSublist(LIST[i].subtask);
-            listInfo = LIST[i];        }
+            getSublist(LIST[i].subTask);
+            listInfo = LIST[i];      
+        }
     }
 }
 
-const tasks = document.getElementById("tasks");
+/**
+ * Method used to create the list of tasks for the specific list by using the taskId
+ */
+var tasks = document.getElementById("new-tasks");
 let subId = 0;
-let task;
 tasks.addEventListener("keyup", function(event) {
     if(event.keyCode === 13) {
-        subtaskname = tasks.value;
         taskId = ++subId;
-        let taskInfo = {
-            name: subtaskname,
+        stepList = [];
+        let newTask = {
+            name: tasks.value,
             subTaskId: taskId,
             status: true,
-            steps: []
+            stepList: stepList
         };
-        listInfo.subtask.push(taskInfo);
-        addsubtasks(subtaskname, taskId);
-        document.getElementById("subtask").textContent = tasks.value;
+        listInfo.subTask.push(newTask);
+        displaySubTasks(newTask.name, taskId);
         tasks.value = "";
-        task = listInfo.subtask;
+        document.getElementById("taskName").textContent = tasks.value;
+        taskInfo = newTask;
+        toggleStep();
     }
 });
 
-function addsubtasks(subTaskName, id) {
-    let text = `<li id=${id} onclick="toggleStep(id)">
-                    <div  class ="disp-inline">
-                    <input type="checkbox" id=${id} onclick="taskDone(id)"/>
-                    <p id=${id} name="status" onclick="stepChild(id)">${subTaskName}</p>
+/**
+ * Method used to display the taskList for the given list
+ * @param {get the value of taskName} subTaskName 
+ * @param {get the value of task ID} id 
+ */
+function displaySubTasks(subTaskName, id) {
+    let text = `<li>
+                    <div id=${id} onclick = "toggleStep()">
+                    <p id=${id} onclick="getTaskId(id)">
+                    <input type="checkbox"/>
+                    ${subTaskName}</p>
                     </div>
                  </li>`
     let position = "beforeend";
@@ -112,25 +126,48 @@ function addsubtasks(subTaskName, id) {
     subTaskList.insertAdjacentHTML(position, text);
 }
 
-function toggleStep(subId){
+/**
+ * Method used to get the Task by using the taskId
+ * @param {Get the value of Id} id 
+ */
+function getTaskId(id) {
+    for(var index = 0; index<listInfo.subTask.length; index++) {
+        if(id == listInfo.subTask[index].subTaskId) {
+            taskInfo = listInfo.subTask[index];
+            getStepsOfTask(taskInfo.stepList);
+            document.getElementById("taskName").textContent = taskInfo.name;
+        }
+    }
+}
+/**
+ * Method used to display the set of steps for the given list
+ * @param {*} steps 
+ */
+function getStepsOfTask(steps) {
+    document.getElementById("steps").textContent = "";
+    for(let j=0; j<steps.length; j++) {
+        displaySteps(steps[j].name, steps[j].id);
+    }
+}
+
+/**
+ * Method used to toggle the div for the specific tasks
+ * @param {} subId 
+ */
+function toggleStep(){
     var x = document.getElementById("step-aside").style.width;
     if(x == "0px"){
         document.getElementById("step-aside").style.width ="360px";
     } else {
-        document.getElementById("step-aside").style.width ="360px";
-        for(var j = 0;j<LIST.length;j++) {
-            for(var i = 0;i < LIST[j].subTask.length;i++){
-                if(LIST[j].subTask[i].subTaskId == subId){
-                    document.getElementById("stepAside").value =  LIST[j].subTask[i].name;
-                    document.getElementById("subtask-title-id").textContent = LIST[j].subTask[i].subTaskId;
-                }
-            }
-        }
+        document.getElementById("step-aside").style.width ="0px";  
     }
 }
 
+/**
+ * Method used to get the steps by using the step Id
+ * @param {*} id 
+ */
 function getSteps(id) {
-    
     for(let l=0; l<listInfo.subtask.length; l++) {
         console.log(listInfo);
         if(listInfo.subTask[l].subTaskId == id) {
@@ -139,28 +176,49 @@ function getSteps(id) {
     }
 }
 
-function getSublist(subtasks) {
+/**
+ * Method used to get the list of Task for the given list
+ * @param {} subTasks 
+ */
+function getSublist(subTasks) {
     let subTaskList = document.getElementById("subtasklist");
     subTaskList.innerHTML = "";
-    for(let j=0; j<subtasks.length; j++) {
-        console.log(subtasks[j].name); 
-        addsubtasks(subtasks[j].name);
+    for(let j=0; j<subTasks.length; j++) {
+        displaySubTasks(subTasks[j].name, subTasks[j].subTaskId);
     }
 }
 
-/* Method used to create the steps for the particular task  
+/* Method used to create the steps for the particular task  */
 let stepId = 0;
-let step = document.getElementById("newSteps");
-input.addEventListener("keyup", function(){
+var stepInput = document.getElementById("newStep");
+stepInput.addEventListener("keyup", function(){
     if(event.keyCode == 13) {
         let newStep = {
-            name: step.value,
+            name: stepInput.value,
             status: true,
             id: ++stepId
         };
-        task.steps.push(newStep);
-        step.innerHTML="Next Step";
+        console.log(newStep);
+        taskInfo.stepList.push(newStep);
+        displaySteps(newStep.name, newStep.id);
+        stepInput.value="";
     }
-});*/
+});
 
+/**
+ * Method used to display the list of steps for the specific task in the list
+ * @param {*} stepName 
+ * @param {*} id 
+ */
+function displaySteps(stepName, id) {
+    let text = `<li>
+                    <div id=${id}>
+                    <p id=${id}>
+                    ${stepName}</p>
+                    </div>
+                 </li>`
+    let position = "beforeend";
+    let subTaskList = document.getElementById("steps");
+    subTaskList.insertAdjacentHTML(position, text);
+}
 
