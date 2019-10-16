@@ -1,0 +1,13 @@
+<svg width="24.000000000000004" height="24.000000000000004" xmlns="http://www.w3.org/2000/svg" stroke="null" style="vector-effect: non-scaling-stroke;">
+ <title stroke="null" style="vector-effect: non-scaling-stroke;"/>
+ <desc stroke="null" style="vector-effect: non-scaling-stroke;"/>
+
+ <g stroke="null">
+  <title stroke="null">background</title>
+  <rect stroke="null" fill="none" id="canvas_background" height="402" width="582" y="-1" x="-1"/>
+ </g>
+ <g stroke="null">
+  <title stroke="null">Layer 1</title>
+  <text stroke="#0078d7" transform="matrix(0.9055456926365009,0,0,0.5397298315643423,-5.331291548793239,11.588482202626206) " xml:space="preserve" text-anchor="start" font-family="Helvetica, Arial, sans-serif" font-size="27" id="svg_1" y="14" x="10" fill="#ffffff">?</text>
+ </g>
+</svg>

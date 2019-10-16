@@ -31,8 +31,16 @@
                     </div>
                     <div class="setting">
                         <button class="main-button">
-                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Settings iconSize-24" aria-hidden="true"></i>
+                            <img src="images/Help.svg" class="image"/>
                         </button>
+                    </div>
+                    <div class="setting">
+                        <button class="main-button">
+                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Megaphone iconSize-24" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                    <div class="setting">
+                        
                     </div>
                 </div>
             </div>
@@ -44,13 +52,13 @@
                         </button>
                     </div>
                     <div class="myday">
-                        <button class="myday-button" onclick="myday()">
+                        <button class="myday-button">
                             <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
                         </button>
                          <span><p id="myday">My Day</p></span>
                     </div>
                     <div class="myday">
-                        <button class="myday-button" onclick="important()">
+                        <button class="myday-button">
                             <span><i class="icon fontIcon ms-Icon ms-Icon--FavoriteStar iconSize-24" aria-hidden="true"></i></span>
                         </button>
                         <span><p id="important">Important </p></span>
@@ -77,36 +85,91 @@
                         <ul id="list" ></ul>
                     </div>
                     <div class="myday">
-                        <button class="myday-button" onclick="openNav()">
-                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                        <button class="myday-button" id="open-side-bar">
+                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24 listcolor" aria-hidden="true"></i></span>
                         </button>
                         <span><input id="newlist" type="text" placeholder="New list"/></span>
                     </div>    
                 </div>
                 <div class="page" >
-                    <div class="centerPage" id="updateListName">
-                        <p id="listName"></p>
+                    <div class="center-page-header">
+                        <div class="center-Page">
+                            <input type="text" id="listName"/>
+                        </div>
+                        <div class="right-header">
+                            <div class="share">
+                                <button>
+                                    <span><i class="icon fontIcon ms-Icon ms-Icon--AddFriend iconSize-24 listcolor" aria-hidden="true"></i></span>
+                                </button>
+                                <span><p>Share</p></span>
+                            </div>
+                            <div class="share">
+                                <button>
+                                    <span><i class="icon fontIcon ms-Icon ms-Icon--Sort iconSize-24 listcolor" aria-hidden="true"></i></span>
+                                </button>
+                                <span><p>Sort</p></span>
+                            </div>
+                        </div>
                     </div>
                     <div id="new-lists"> 
                         <ul><p id="subtasklist"></p></ul>
                     </div>
-                    <div class="sublist" id="sublist">
-                        <input type="text" id="new-tasks" placeholder="Add Tasks"/>
+                    <div class="task" id="sublist">
+                        <button class="taskButton">
+                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24 listcolor" aria-hidden="true"></i></span>
+                        </button>
+                        <span><input id="new-tasks" type="text" placeholder="Add Tasks"/></span>
                     </div>
                 </div>
                 <div class="finalDiv" id="step-aside">
-                    <div class="centerPage">
-                        <p id="taskName"></p>
+                    <div class="nameTage">
+                        <div class="stepName">
+                            <span><input type="checkbox"/></span>
+                            <span><input type="text" id="taskName"/></span>
+                        </div>
+                        <div id="new-Steps"> 
+                            <ul id="steps"></ul>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><input id="newStep" type="text" placeholder="Next Step"/></span>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button" onclick="myday()">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p id="myday">Added to My Day</p></span>
+                        </div> 
+                        <div class="myday">
+                            <button class="myday-button" onclick="myday()">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--AlarmClock iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p id="myday">Remaind me</p></span>
+                        </div> 
+                        <div class="myday">
+                            <button class="myday-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Add due date</p></span>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--RecurringEvent iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Repeat</p></span>
+                        </div>
+                        <div class="myday">
+                            <button class="myday-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Attach iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Add file</p></span>
+                        </div>
+                        <div class="notes">
+                            <span><input type="text" placeholder="Add Note"/></span>
+                        </div>
                     </div>
-                    <div id="new-Steps"> 
-                        <ul><p id="steps"></p></ul>
-                    </div>
-                    <div class="steps">
-                        <button class="taskbutton">
-                            <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <input  type="text" id="newStep" placeholder="Next Step"/>
-                    </div>    
                 </div>
             </div>
         </div>

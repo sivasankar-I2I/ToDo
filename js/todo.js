@@ -1,35 +1,57 @@
 
+let LIST = [];
+let listInfo;
+let taskInfo;
+let numberOfList = 0;
+let subId = 0;
+let newList = getElementById("newlist");
+let tasks = getElementById("new-tasks");
+let steps = getElementById("newStep");
+let list = getElementById("list");
+let stepId = 0;
 
-document.getElementById("open-side-bar").addEventListener("click", toggleNavbar);
+init();
+
+function init() {
+    addEventListeners(getElementById("open-side-bar"), "click", toggleNavbar);
+    addEventListeners(newList, "keyup", createList);
+    addEventListeners(tasks, "keyup", createTask);
+    addEventListeners(steps, "keyup", createStep);
+    addEventListeners(getElementById("listName"), "keyup", updateListName);
+    addEventListeners(getElementById("taskName"), "keyup", updateTaskName);
+    addEventListeners(getElementById("stepName"), "keyup", updateStepName);
+}
+
+function addEventListeners(element, action, method) {
+    element.addEventListener(action, method);
+}
+
+function getElementById(id) {
+    return document.getElementById(id);
+}
+
 /**
  * Method used to toggle the sidebar 
  */
 function toggleNavbar() {
-    if (document.getElementById("sidebar").style.width=="290px") {
-        document.getElementById("sidebar").style.width="48px";
-        document.getElementById("sidebar").style.width="48px";
+    if (getElementById("sidebar").style.width=="290px") {
+        getElementById("sidebar").style.width="48px";
     } else {
-        document.getElementById("sidebar").style.width="290px";
+        getElementById("sidebar").style.width="290px";
     }
 }
 
 function myday() {
-    if(document.getElementById("myday").style.fontSize="14px") {
-        document.getElementById("myday").style.fontSize = '16px';
+    if(getElementById("myday").style.fontSize="14px") {
+        getElementById("myday").style.fontSize = '16px';
     } 
 }
 function important() {
-    if(document.getElementById("important")){
-        document.getElementById("important").style.fontSize = '16px';
-        document.getElementById("important").style.color = '#0078d7';
+    if(getElementById("important")){
+        getElementById("important").style.fontSize = '16px';
+        getElementById("important").style.color = '#0078d7';
     }
 }
-
-var LIST = [];
-var id;
-var listInfo;
-var taskInfo;
-var numberOfList = 0;
 
 /**
  *  Method used to display the list Name in the sidebar
@@ -42,21 +64,19 @@ function displayLists(list, id) {
                     <i class="ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor" aria-hidden="true" ></i>
                     <span>${list}</span></p>
                   </li>`;
-    let position = "beforeend";
-    document.getElementById("list").insertAdjacentHTML(position, text, id);
+    var position = "beforeend";
+    getElementById("list").insertAdjacentHTML(position, text);
 }
 
 /**
  * Method used to create the new list and push it in the array
  */
-const input = document.getElementById("newlist");
-input.addEventListener("keyup", function(){
-    let subTaskList = document.getElementById("subtasklist");
-    subTaskList.innerHTML = "";
+function createList() {
+    getElementById("subtasklist").innerHTML = "";
     subTask = [];
     if(event.keyCode == 13) {
         let listObject = {
-            name: input.value,
+            name: newList.value,
             status: true,
             id: ++numberOfList,
             subTask: subTask
@@ -65,11 +85,26 @@ input.addEventListener("keyup", function(){
             LIST.push(listObject);
             displayLists(listObject.name, listObject.id);
         }
-        input.value = "";
-        document.getElementById("listName").textContent = listObject.name+'...';
-        listInfo = listObject;
+        newList.value = "";
+        listName(listObject);
     }
-});
+};
+
+/**
+ * Method used to update the list Name
+ */
+function updateListName() {
+    let updatedListName = getElementById("listName").value;
+    if(event.keyCode === 13) {
+        listInfo.name = updatedListName;
+        while (list.firstChild) {
+            list.removeChild(list.firstChild);
+        }
+        for(var i=0; i<LIST.length; i++) {
+            displayLists(LIST[i].name, LIST[i].id);
+        }
+    }
+}
 
 /**
  * Method used to get the list by using the listId
@@ -77,19 +112,21 @@ input.addEventListener("keyup", function(){
 function getId(listId) {
     for(let i=0; i<LIST.length; i++) {
         if(LIST[i].id == listId) {
-            document.getElementById("listName").textContent = LIST[i].name+'...';
-            getSublist(LIST[i].subTask);
-            listInfo = LIST[i];      
+            listName(LIST[i]);
         }
     }
+}
+
+function listName (listObject) {
+    getElementById("listName").value = listObject.name;
+    listInfo = listObject;
+    getSublist(listObject.subTask);    
 }
 
 /**
  * Method used to create the list of tasks for the specific list by using the taskId
  */
-var tasks = document.getElementById("new-tasks");
-let subId = 0;
-tasks.addEventListener("keyup", function(event) {
+function createTask() {
     if(event.keyCode === 13) {
         taskId = ++subId;
         stepList = [];
@@ -102,12 +139,28 @@ tasks.addEventListener("keyup", function(event) {
         listInfo.subTask.push(newTask);
         displaySubTasks(newTask.name, taskId);
         tasks.value = "";
-        document.getElementById("taskName").textContent = tasks.value;
-        taskInfo = newTask;
-        toggleStep();
+        taskName(newTask);
     }
-});
+};
 
+function taskName (taskObject) {
+    getElementById("taskName").value = taskObject.name;
+    taskInfo = taskObject;
+    getStepsOfTask(taskObject.stepList);
+}
+
+function updateTaskName() {
+    let updatedTaskName = getElementById("taskName").value;
+    if(event.keyCode === 13) {
+        taskInfo.name = updatedTaskName;
+        while (subtasklist.firstChild) {
+            subtasklist.removeChild(subtasklist.firstChild);
+        }
+        for(let j=0; j<listInfo.subTask.length; j++) {
+            displaySubTasks(subTask[j].name, subTask[j].subTaskId);
+        }
+    }
+}
 /**
  * Method used to display the taskList for the given list
  * @param {get the value of taskName} subTaskName 
@@ -121,9 +174,7 @@ function displaySubTasks(subTaskName, id) {
                     ${subTaskName}</p>
                     </div>
                  </li>`
-    let position = "beforeend";
-    let subTaskList = document.getElementById("subtasklist");
-    subTaskList.insertAdjacentHTML(position, text);
+    getElementById("subtasklist").insertAdjacentHTML("beforeend", text);
 }
 
 /**
@@ -133,18 +184,17 @@ function displaySubTasks(subTaskName, id) {
 function getTaskId(id) {
     for(var index = 0; index<listInfo.subTask.length; index++) {
         if(id == listInfo.subTask[index].subTaskId) {
-            taskInfo = listInfo.subTask[index];
-            getStepsOfTask(taskInfo.stepList);
-            document.getElementById("taskName").textContent = taskInfo.name;
+            taskName(listInfo.subTask[index]);
         }
     }
 }
+
 /**
  * Method used to display the set of steps for the given list
  * @param {*} steps 
  */
 function getStepsOfTask(steps) {
-    document.getElementById("steps").textContent = "";
+    getElementById("steps").textContent = "";
     for(let j=0; j<steps.length; j++) {
         displaySteps(steps[j].name, steps[j].id);
     }
@@ -155,11 +205,11 @@ function getStepsOfTask(steps) {
  * @param {} subId 
  */
 function toggleStep(){
-    var x = document.getElementById("step-aside").style.width;
+    var x = getElementById("step-aside").style.width;
     if(x == "0px"){
-        document.getElementById("step-aside").style.width ="360px";
+        getElementById("step-aside").style.width ="360px";
     } else {
-        document.getElementById("step-aside").style.width ="0px";  
+        getElementById("step-aside").style.width ="360px";  
     }
 }
 
@@ -168,10 +218,9 @@ function toggleStep(){
  * @param {*} id 
  */
 function getSteps(id) {
-    for(let l=0; l<listInfo.subtask.length; l++) {
-        console.log(listInfo);
+    for(let l=0; l<listInfo.subtasks.length; l++) {
         if(listInfo.subTask[l].subTaskId == id) {
-            document.getElementById("subtask").textContent = listInfo.subtask.name;
+            getElementById("subtask").textContent = listInfo.subtask.name;
         }
     }
 }
@@ -181,7 +230,7 @@ function getSteps(id) {
  * @param {} subTasks 
  */
 function getSublist(subTasks) {
-    let subTaskList = document.getElementById("subtasklist");
+    let subTaskList = getElementById("subtasklist");
     subTaskList.innerHTML = "";
     for(let j=0; j<subTasks.length; j++) {
         displaySubTasks(subTasks[j].name, subTasks[j].subTaskId);
@@ -189,21 +238,18 @@ function getSublist(subTasks) {
 }
 
 /* Method used to create the steps for the particular task  */
-let stepId = 0;
-var stepInput = document.getElementById("newStep");
-stepInput.addEventListener("keyup", function(){
+function createStep() {
     if(event.keyCode == 13) {
         let newStep = {
-            name: stepInput.value,
+            name: steps.value,
             status: true,
             id: ++stepId
         };
-        console.log(newStep);
         taskInfo.stepList.push(newStep);
         displaySteps(newStep.name, newStep.id);
-        stepInput.value="";
+        steps.value="";
     }
-});
+};
 
 /**
  * Method used to display the list of steps for the specific task in the list
@@ -212,13 +258,20 @@ stepInput.addEventListener("keyup", function(){
  */
 function displaySteps(stepName, id) {
     let text = `<li>
-                    <div id=${id}>
-                    <p id=${id}>
-                    ${stepName}</p>
+                    <div id=${id} class="steps">
+                    <span>
+                    <input type="checkbox"/></span>
+                    <span>
+                    <input type="text" value=${stepName} id="stepName"></span>
                     </div>
                  </li>`
-    let position = "beforeend";
-    let subTaskList = document.getElementById("steps");
-    subTaskList.insertAdjacentHTML(position, text);
+    getElementById("steps").insertAdjacentHTML("beforeend", text);
+}
+
+function updateStepName() {
+    let updatedStepName = getElementById("stepName").value;
+    if(event.keyCode === 13) {
+       console.log(updateStepName);
+    }
 }
 
