@@ -19,7 +19,7 @@ function init() {
     addEventListeners(steps, "keyup", createStep);
     addEventListeners(getElementById("listName"), "keyup", updateListName);
     addEventListeners(getElementById("taskName"), "keyup", updateTaskName);
-    addEventListeners(getElementById("stepName"), "keyup", updateStepName);
+    //addEventListeners(getElementById("stepName"), "keyup", updateStepName);
 }
 
 function addEventListeners(element, action, method) {
@@ -59,15 +59,20 @@ function important() {
  * @param {*} id 
  */
 function displayLists(list, id) {
-    let text = `<li>
-                    <p id=${id} onclick="getId(id)" class="list">
-                    <i class="ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor" aria-hidden="true" ></i>
-                    <span>${list}</span></p>
-                  </li>`;
-    var position = "beforeend";
-    getElementById("list").insertAdjacentHTML(position, text);
+    var div = document.createElement("div");
+    div.className = "list";
+    div.setAttribute("id", id);
+    div.setAttribute("onclick", `getId(${id})`);
+    var i = document.createElement("i");
+    i.setAttribute("class", "ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor");
+    div.appendChild(i);
+    var p = document.createElement("p");
+    p.setAttribute("id", id);
+    p.textContent = list;
+    div.appendChild(p);
+    getElementById("list").appendChild(div);
 }
-
+    
 /**
  * Method used to create the new list and push it in the array
  */
@@ -78,7 +83,7 @@ function createList() {
         let listObject = {
             name: newList.value,
             status: true,
-            id: ++numberOfList,
+            id: "li" + ++numberOfList,
             subTask: subTask
         };
         if(listObject.name) {
@@ -132,12 +137,12 @@ function createTask() {
         stepList = [];
         let newTask = {
             name: tasks.value,
-            subTaskId: taskId,
+            subTaskId: "task" + taskId,
             status: true,
             stepList: stepList
         };
         listInfo.subTask.push(newTask);
-        displaySubTasks(newTask.name, taskId);
+        displaySubTasks(newTask.name, newTask.subTaskId);
         tasks.value = "";
         taskName(newTask);
     }
@@ -167,14 +172,53 @@ function updateTaskName() {
  * @param {get the value of task ID} id 
  */
 function displaySubTasks(subTaskName, id) {
-    let text = `<li>
-                    <div id=${id} onclick = "toggleStep()">
-                    <p id=${id} onclick="getTaskId(id)">
-                    <input type="checkbox"/>
-                    ${subTaskName}</p>
-                    </div>
-                 </li>`
-    getElementById("subtasklist").insertAdjacentHTML("beforeend", text);
+    let div = document.createElement("div");
+    div.className = "subtask-div";
+    div.setAttribute("onclick", `toggleStep()`);
+    let inputDiv = document.createElement("div");
+    inputDiv.className = "task-checkbox";
+    let checkbox = document.createElement("input");
+    checkbox.setAttribute("type", "checkbox");
+    checkbox.onclick = function(e){checkStatus(id)};
+    inputDiv.appendChild(checkbox);
+    div.appendChild(inputDiv);
+    let text = document.createElement("div");
+    text.setAttribute("id", "taskNameList");
+    let p = document.createElement("p");
+    p.className = "taskText-div";
+    p.setAttribute("id", id);
+    p.setAttribute("name", "taskNameList");
+    p.onclick = function(e){getTaskId(id)};
+    p.textContent = subTaskName;
+    text.appendChild(p);
+    div.appendChild(text);
+    getElementById("subtasklist").appendChild(div); 
+}
+
+function checkStatus(id) {
+    console.log(id);
+    var currentTask;
+    for(var index = 0; index<listInfo.subTask.length; index++) {
+        if(id == listInfo.subTask[index].subTaskId) {
+            currentTask = listInfo.subTask[index];
+        }
+    }
+    if(currentTask.status) {
+        currentTask.status = false;
+    } else {
+        currentTask.status = true;
+    }
+    strikeOut(currentTask.status, currentTask.subTaskId);
+}
+
+function strikeOut(status, id) {
+    if(status) {
+        document.getElementById(id).className = "taskText-div";
+        document.getElementById("taskName").className = "task-name-text";
+    } else {
+        document.getElementById(id).className = "taskText-div-p";
+        document.getElementById("taskName").className = "task-name-linethrough";
+    }
 }
 
 /**
@@ -182,6 +226,7 @@ function displaySubTasks(subTaskName, id) {
  * @param {Get the value of Id} id 
  */
 function getTaskId(id) {
+    console.log(id);
     for(var index = 0; index<listInfo.subTask.length; index++) {
         if(id == listInfo.subTask[index].subTaskId) {
             taskName(listInfo.subTask[index]);
@@ -243,7 +288,7 @@ function createStep() {
         let newStep = {
             name: steps.value,
             status: true,
-            id: ++stepId
+            id: ++stepId + "step"
         };
         taskInfo.stepList.push(newStep);
         displaySteps(newStep.name, newStep.id);
@@ -257,21 +302,34 @@ function createStep() {
  * @param {*} id 
  */
 function displaySteps(stepName, id) {
-    let text = `<li>
-                    <div id=${id} class="steps">
-                    <span>
-                    <input type="checkbox"/></span>
-                    <span>
-                    <input type="text" value=${stepName} id="stepName"></span>
-                    </div>
-                 </li>`
-    getElementById("steps").insertAdjacentHTML("beforeend", text);
+    let div = document.createElement("div");
+    div.className = "steps";
+    div.setAttribute("id", id);
+    let span = document.createElement("span");
+    let input = document.createElement("input");
+    input.setAttribute("type", "checkbox");
+    span.appendChild(input);
+    div.appendChild(span);
+    let text = document.createElement("input");
+    text.setAttribute("type", "text");
+    text.value = stepName;
+    text.setAttribute("id", "stepName");
+    div.appendChild(text);
+    let i = document.createElement("i");
+    i.setAttribute("class", "icon fontIcon ms-Icon ms-Icon--Cancel iconSize-16");
+    i.setAttribute("onclick", `deleteStep(${id})`);
+    div.appendChild(i);
+    getElementById("steps").appendChild(div);
+}
+
+function deleteStep(id) {
+    
 }
 
 function updateStepName() {
     let updatedStepName = getElementById("stepName").value;
     if(event.keyCode === 13) {
-       console.log(updateStepName);
     }
 }
 
+  
