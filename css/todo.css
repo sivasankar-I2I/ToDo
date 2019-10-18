@@ -38,14 +38,22 @@ body {
     width: 651px;
     height: 680px;
 }
-.sidebar{
+.w-48 {
     width: 48px;
+}
+.sidebar{
     height: 620px;
     overflow-x: hidden;
     transition: 0.3s;
     background-color: #f4f4f4;
 }
 
+.toggle-width {
+    width: 48px;
+}
+.toggle-width-open {
+    width: 290px;
+}
 .createlist{
     width: 290px;
     display: flex;
@@ -118,21 +126,42 @@ body {
     height: 48px;
     justify-content: flex-end;
 }
+.option-icon {
+    height: 42px;
+    width:20px;
+    color:#ffffff;
+}
 
-.setting{
-    width: 48px;
-    height: 48px;
-    display: inline-block;
-}
-.setting span{
+.header-right-side-options i{
     color: white;
 }
-#settings{
-    color: white;
-}
+
 .question-image{
     width: 16px;
     height: 16px;
+}
+
+.step{
+    width: 290px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+}
+
+.step input{
+    width: 305px;
+    height: 48px;
+    border: none;
+    outline: none;
+    margin-top: 0px;
+    background-color: #ffffff;
+    padding-left: 14px;
+}
+.step input::placeholder{
+    color: #0078d7;
+    font-size: 13.33px;
+    font-weight: 400;
+    line-height: 30px;
 }
 
 .myday input{
@@ -156,11 +185,7 @@ body {
     color: #0078d7;
     font-size: 20px;  
 }
-.nameTag {
-    background-color: white;
-    width: 300px;
-    height: 50px;
-}
+
 .stepName {
     color: #0078d7;
     font-size: 20px;  
@@ -169,39 +194,25 @@ body {
     display: flex;
 }
 
-.task-name-text {
-    width: 250px;
+.task-name {
+    width: 286px;
     height: 45px;
     padding: 5px;
     border-width: 0px;
     border-style: none;
     margin-left: 0px;
     outline: none;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
     color: #0078d7;
     font-size: 20.33px;
     font-weight: 400;
     line-height: 30px;
     cursor: pointer;
-    text-decoration: none;
 }
 
 
-.task-name-linethrough {
-    width: 250px;
-    height: 45px;
-    padding: 5px;
-    border-width: 0px;
-    border-style: none;
-    margin-left: 0px;
-    outline: none;
-    background-color: #f4f4f4;
-    color: #0078d7;
-    font-size: 20.33px;
-    font-weight: 400;
-    line-height: 30px;
-    cursor: pointer;
-    text-decoration: none;
+.t-n-l{
+    text-decoration: line-through;
 }
 
 
@@ -237,11 +248,24 @@ div#editor {
 .finalDiv{
     margin-left: auto;
     float: right;
-    width: 0;
     height:100%;
-    background-color:#f4f4f4;
+    background-color:#f5f5f5;
     overflow-x: hidden;
     transition: 0.2s;
+}
+
+.w-0 {
+    width: 0px;
+}
+.w-360 {
+    width: 360px;
+}
+
+.nameTag {
+    margin: 15px 15px 15px 15px;
+    background-color: #ffffff;
+    width: 339px;
+    height: auto;
 }
 
 .taskButton{
@@ -290,9 +314,11 @@ div#editor {
 }
 
 .notes{
-    width: 290px;
-    height: 48px;
+    width: 339px;
+    height: 86px;
     display: flex;
+    margin: 15px 10px 10px 15px;
+    background-color: #ffffff;
 }
 
 .notes input[type=text]{
@@ -300,13 +326,11 @@ div#editor {
     height: 48px;
     border: none;
     outline: none;
-    margin-top: 20px;
-    background-color: #f4f4f4;
-    padding: 0 0 8px 0;
+    background-color: #ffffff;
 }
 .notes input[type=text]::placeholder{
-    color: #fff;
     font-size: 13.33px;
+    padding-left: 14px;
     font-weight: 400;
     line-height: 30px;
 }
@@ -317,9 +341,27 @@ div#editor {
     border: none;
     outline: none;
     margin-left: 15px;
-    background-color: #f4f4f4;
+    background-color: #ffffff;
+    text-decoration: none;
 }
 .steps input[type=text]::placeholder{
+    color: grey;
+    font-size: 13.33px;
+    font-weight: 400;
+    line-height: 30px;
+}
+
+
+.steps-line-through input[type=text]{
+    width: 238px;
+    height: 42px;
+    border: none;
+    outline: none;
+    margin-left: 15px;
+    background-color: #ffffff;
+    text-decoration: line-through;
+}
+.steps-line-through input[type=text]::placeholder{
     color: grey;
     font-size: 13.33px;
     font-weight: 400;
@@ -384,3 +426,106 @@ div#editor {
     text-decoration: line-through;
 }
  
+.check-Box {
+    padding: 18px 0 0 8px;
+    background-color: #ffffff;
+    width: 24px;
+}
+
+.task-Name-Input {
+    padding: 0px 0 0 0px;
+}
+
+.step-button{
+    width: 48px;
+    height: 48px;
+    background-color: #ffffff;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding-left: 14px;
+}
+
+.myday-added{
+    width: 338px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    margin: 0 0 0 15px;
+    background-color: #ffffff;
+}
+.myday-added span p {
+    padding-top: 14px;
+    padding-left: 10px;
+    background-color: #ffffff;
+}
+.header-right-side-options{
+    padding-top: 0px;
+    width: 48px;
+    cursor: pointer;
+    text-align:center;
+    height: inherit;
+}
+
+.name-icon{
+    width:30px;
+    height:30px;
+    margin:10px 10px 10px 8px;
+    line-height: 30px;
+    vertical-align: middle;
+    background-color: #1EA301;
+    color:#ffffff;
+    border-radius: 50%;
+    font-size:16px;
+}
+#name-icon{
+    padding-top: 12px ;
+}
+.header-right-side{
+    float: right;
+    display: flex;
+    margin-left: auto;
+    flex-direction: row-reverse;
+    width:25%;
+    height:100%;
+}
+.remaind-me{
+    width: 338px;
+    height: 48px;
+    cursor: pointer;
+    display: flex;
+    margin: 10px 15px 0px 15px;
+    background-color: #ffffff;
+}
+.remaind-me span p {
+    padding-top: 14px;
+    padding-left: 10px;
+    background-color: #ffffff;
+}
+
+.detailFooter {
+    background-color: #f5f5f5;
+    width: 359px;
+    height: 39px;
+    margin: 90px 0 0 15px;
+    display: flex;
+}
+.deleteTask i{
+    margin-left: 99px;
+}
+.deleteTask span {
+    margin-left: 111px;
+    font-size: 12px;
+    color: rgb(102, 102, 102);
+    font-family: Segoe, Segoe UI, Arial,sans-serif;
+    font-weight: 500px;
+    text-decoration-style:solid;
+    text-rendering:optimizelegibility;
+}
+.closeButton {
+    width: 20px;
+    height: 20px;
+}
+.steps-line-through {
+    padding-left: 18px;
+}

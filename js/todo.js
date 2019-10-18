@@ -13,13 +13,12 @@ let stepId = 0;
 init();
 
 function init() {
-    addEventListeners(getElementById("open-side-bar"), "click", toggleNavbar);
     addEventListeners(newList, "keyup", createList);
     addEventListeners(tasks, "keyup", createTask);
     addEventListeners(steps, "keyup", createStep);
     addEventListeners(getElementById("listName"), "keyup", updateListName);
     addEventListeners(getElementById("taskName"), "keyup", updateTaskName);
-    //addEventListeners(getElementById("stepName"), "keyup", updateStepName);
+    addEventListeners(getElementById("closetask"), "click", closeToggle);
 }
 
 function addEventListeners(element, action, method) {
@@ -34,22 +33,10 @@ function getElementById(id) {
  * Method used to toggle the sidebar 
  */
 function toggleNavbar() {
-    if (getElementById("sidebar").style.width=="290px") {
-        getElementById("sidebar").style.width="48px";
+    if (getElementById("sidebar").className == "sidebar toggle-width") {
+        getElementById("sidebar").className = "sidebar toggle-width-open"; 
     } else {
-        getElementById("sidebar").style.width="290px";
-    }
-}
-
-function myday() {
-    if(getElementById("myday").style.fontSize="14px") {
-        getElementById("myday").style.fontSize = '16px';
-    } 
-}
-function important() {
-    if(getElementById("important")){
-        getElementById("important").style.fontSize = '16px';
-        getElementById("important").style.color = '#0078d7';
+        getElementById("sidebar").className = "sidebar toggle-width";
     }
 }
 
@@ -62,7 +49,7 @@ function displayLists(list, id) {
     var div = document.createElement("div");
     div.className = "list";
     div.setAttribute("id", id);
-    div.setAttribute("onclick", `getId(${id})`);
+    div.onclick = function(e){getId(id)};
     var i = document.createElement("i");
     i.setAttribute("class", "ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor");
     div.appendChild(i);
@@ -142,13 +129,18 @@ function createTask() {
             stepList: stepList
         };
         listInfo.subTask.push(newTask);
-        displaySubTasks(newTask.name, newTask.subTaskId);
+        displaySubTasks(newTask);
         tasks.value = "";
         taskName(newTask);
     }
 };
 
 function taskName (taskObject) {
+    if(taskObject.status) {
+        getElementById("taskName").className = "task-name";
+    } else {
+        getElementById("taskName").className = "task-name t-n-l";
+    }
     getElementById("taskName").value = taskObject.name;
     taskInfo = taskObject;
     getStepsOfTask(taskObject.stepList);
@@ -162,7 +154,7 @@ function updateTaskName() {
             subtasklist.removeChild(subtasklist.firstChild);
         }
         for(let j=0; j<listInfo.subTask.length; j++) {
-            displaySubTasks(subTask[j].name, subTask[j].subTaskId);
+            displaySubTasks(subTask[j]);
         }
     }
 }
@@ -171,7 +163,7 @@ function updateTaskName() {
  * @param {get the value of taskName} subTaskName 
  * @param {get the value of task ID} id 
  */
-function displaySubTasks(subTaskName, id) {
+function displaySubTasks(task) {
     let div = document.createElement("div");
     div.className = "subtask-div";
     div.setAttribute("onclick", `toggleStep()`);
@@ -179,45 +171,47 @@ function displaySubTasks(subTaskName, id) {
     inputDiv.className = "task-checkbox";
     let checkbox = document.createElement("input");
     checkbox.setAttribute("type", "checkbox");
-    checkbox.onclick = function(e){checkStatus(id)};
+    checkbox.setAttribute("task", task);
+    checkbox.onclick = function(e){checkStatus(task)};
     inputDiv.appendChild(checkbox);
     div.appendChild(inputDiv);
     let text = document.createElement("div");
     text.setAttribute("id", "taskNameList");
     let p = document.createElement("p");
-    p.className = "taskText-div";
-    p.setAttribute("id", id);
+    if(task.status) {
+        p.className = "taskText-div";
+    } else {
+        p.className = "taskText-div-p";
+    }
+    p.setAttribute("id", task.subTaskId);
     p.setAttribute("name", "taskNameList");
-    p.onclick = function(e){getTaskId(id)};
-    p.textContent = subTaskName;
+    p.onclick = function(e){getTaskId(task.subTaskId)};
+    p.textContent = task.name;
     text.appendChild(p);
     div.appendChild(text);
     getElementById("subtasklist").appendChild(div); 
 }
 
-function checkStatus(id) {
-    console.log(id);
-    var currentTask;
-    for(var index = 0; index<listInfo.subTask.length; index++) {
-        if(id == listInfo.subTask[index].subTaskId) {
-            currentTask = listInfo.subTask[index];
-        }
-    }
-    if(currentTask.status) {
-        currentTask.status = false;
+function checkStatus(task) {
+    console.log(task);
+    if(!task.status) {
+        task.status = true;
     } else {
-        currentTask.status = true;
+        task.status = false;
     }
-    strikeOut(currentTask.status, currentTask.subTaskId);
+    while (subtasklist.firstChild) {
+        subtasklist.removeChild(subtasklist.firstChild);
+    }
+    for(let i=0; i<listInfo.subTask.length; i++) {
+        displaySubTasks(listInfo.subTask[i]);
+    }
 }
 
-function strikeOut(status, id) {
-    if(status) {
-        document.getElementById(id).className = "taskText-div";
-        document.getElementById("taskName").className = "task-name-text";
+function strikeTaskName(task) {
+    if(document.getElementById("taskName").value == task.name) {
+        document.getElementById("taskName").className = "task-name t-n-l";
     } else {
-        document.getElementById(id).className = "taskText-div-p";
-        document.getElementById("taskName").className = "task-name-linethrough";
+        document.getElementById("taskName").className = "task-name";
     }
 }
 
@@ -226,7 +220,6 @@ function strikeOut(status, id) {
  * @param {Get the value of Id} id 
  */
 function getTaskId(id) {
-    console.log(id);
     for(var index = 0; index<listInfo.subTask.length; index++) {
         if(id == listInfo.subTask[index].subTaskId) {
             taskName(listInfo.subTask[index]);
@@ -241,7 +234,7 @@ function getTaskId(id) {
 function getStepsOfTask(steps) {
     getElementById("steps").textContent = "";
     for(let j=0; j<steps.length; j++) {
-        displaySteps(steps[j].name, steps[j].id);
+        displaySteps(steps[j]);
     }
 }
 
@@ -250,11 +243,18 @@ function getStepsOfTask(steps) {
  * @param {} subId 
  */
 function toggleStep(){
-    var x = getElementById("step-aside").style.width;
-    if(x == "0px"){
-        getElementById("step-aside").style.width ="360px";
+    if(getElementById("step-aside").className == "finalDiv w-0") {
+        getElementById("step-aside").className = "finalDiv w-360"
     } else {
-        getElementById("step-aside").style.width ="360px";  
+        getElementById("step-aside").className = "finalDiv w-360"
+    }
+}
+
+function closeToggle() {
+    if(getElementById("step-aside").className == "finalDiv w-360") {
+        getElementById("step-aside").className = "finalDiv w-0"
+    } else {
+        getElementById("step-aside").className = "finalDiv w-0"
     }
 }
 
@@ -278,7 +278,7 @@ function getSublist(subTasks) {
     let subTaskList = getElementById("subtasklist");
     subTaskList.innerHTML = "";
     for(let j=0; j<subTasks.length; j++) {
-        displaySubTasks(subTasks[j].name, subTasks[j].subTaskId);
+        displaySubTasks(subTasks[j]);
     }
 }
 
@@ -291,7 +291,7 @@ function createStep() {
             id: ++stepId + "step"
         };
         taskInfo.stepList.push(newStep);
-        displaySteps(newStep.name, newStep.id);
+        displaySteps(newStep);
         steps.value="";
     }
 };
@@ -301,35 +301,50 @@ function createStep() {
  * @param {*} stepName 
  * @param {*} id 
  */
-function displaySteps(stepName, id) {
+function displaySteps(step) {
     let div = document.createElement("div");
-    div.className = "steps";
-    div.setAttribute("id", id);
+    if(step.status) {
+        div.className = "steps";
+    } else {
+        div.className = "steps-line-through";
+    }
+    div.setAttribute("id", step.id);
     let span = document.createElement("span");
     let input = document.createElement("input");
     input.setAttribute("type", "checkbox");
+    input.onclick = function(e){strikeOutStep(step.id)};
     span.appendChild(input);
     div.appendChild(span);
     let text = document.createElement("input");
     text.setAttribute("type", "text");
-    text.value = stepName;
-    text.setAttribute("id", "stepName");
+    text.value = step.name;
+    text.setAttribute("id", step.id);
     div.appendChild(text);
     let i = document.createElement("i");
     i.setAttribute("class", "icon fontIcon ms-Icon ms-Icon--Cancel iconSize-16");
-    i.setAttribute("onclick", `deleteStep(${id})`);
     div.appendChild(i);
     getElementById("steps").appendChild(div);
 }
 
-function deleteStep(id) {
-    
+function strikeOutStep(id) {
+    let currentStep;
+    for(let step of taskInfo.stepList) {
+        if(id === step.id) {
+            currentStep = step;
+        }
+    }
+    if(currentStep.status) {
+        currentStep.status = false;
+    } else {
+        currentStep.status = true;
+    }
+    strikeTask(currentStep.status, currentStep.id);
 }
 
-function updateStepName() {
-    let updatedStepName = getElementById("stepName").value;
-    if(event.keyCode === 13) {
+function strikeTask(status, id) {
+    if(status) {
+        document.getElementById(id).className = "steps";
+    } else {
+        document.getElementById(id).className = "steps-line-through";
     }
 }
-
-  

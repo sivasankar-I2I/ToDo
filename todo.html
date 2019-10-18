@@ -23,31 +23,25 @@
                     <i class="icon fontIcon ms-Icon ms-Icon--Search iconSize-24" aria-hidden="true"></i>
                     <input type="search" placeholder="Search"/>
                 </div>
-                <div class="left-navbar">
-                    <div class="setting">
-                        <button class="main-button">
-                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Settings iconSize-24" aria-hidden="true"></i>
-                        </button>
+                <div class="header-right-side">
+                    <div class="header-right-side-options" >
+                        <div class="name-icon" >SS</div>
                     </div>
-                    <div class="setting">
-                        <button class="main-button">
-                            <img src="images/Help.svg" class="image"/>
-                        </button>
+                    <div class="header-right-side-options" id="name-icon">
+                        <i class="icon fontIcon ms-Icon ms-Icon--Megaphone iconSize-24 option-icon"></i>
                     </div>
-                    <div class="setting">
-                        <button class="main-button">
-                            <i id="settings" class="icon fontIcon ms-Icon ms-Icon--Megaphone iconSize-24" aria-hidden="true"></i>
-                        </button>
+                    <div class="header-right-side-options">
+                        <img class="option-icon" src="images/Help.svg" />
                     </div>
-                    <div class="setting">
-                        
+                    <div class="header-right-side-options" id="name-icon">
+                        <i class="ms-Icon ms-Icon--Settings iconSize-24 option-icon"></i>
                     </div>
                 </div>
             </div>
             <div class="mainpage">
-                <div class="sidebar" id="sidebar">
+                <div class="sidebar toggle-width" id="sidebar">
                     <div class="myday">
-                        <button class="myday-button"  id="open-side-bar">
+                        <button class="myday-button" onclick="toggleNavbar()">
                             <span><i id="menu" class="icon fontIcon ms-Icon ms-Icon--GlobalNavButton iconSize-24" aria-hidden="true"></i></span>
                         </button>
                     </div>
@@ -121,53 +115,64 @@
                         <span><input id="new-tasks" type="text" placeholder="Add Tasks"/></span>
                     </div>
                 </div>
-                <div class="finalDiv" id="step-aside">
-                    <div class="nameTage">
-                        <div class="stepName">
-                            <span><input type="checkbox"/></span>
-                            <span><input type="text" id="taskName" class="task-name-text"/></span>
+                <div class="finalDiv w-0" id="step-aside">
+                    <div class="nameTag">
+                        <div class="stepName strike-out">
+                            <div class="check-Box"><input type="checkbox" id="taskNameCheckBox"/></div>
+                            <div><input type="text" id="taskName" class="task-name"/></div>
                         </div>
                         <div id="new-Steps"> 
                             <ul id="steps"></ul>
                         </div>
-                        <div class="myday">
-                            <button class="myday-button">
+                        <div class="step">
+                            <button class="step-button">
                                 <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
                             </button>
                             <span><input id="newStep" type="text" placeholder="Next Step"/></span>
                         </div>
-                        <div class="myday">
-                            <button class="myday-button" onclick="myday()">
-                                <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
+                    </div>
+                    <div class="myday-added">
+                        <button class="step-button">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p id="myday">Added to My Day</p></span>
+                    </div>
+                    <div class="remaind-me">
+                        <button class="step-button" onclick="myday()">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--AlarmClock iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p id="myday">Remind me</p></span>
+                    </div> 
+                    <div class="myday-added">
+                        <button class="step-button">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p>Add due date</p></span>
+                    </div>
+                    <div class="myday-added">
+                        <button class="step-button">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--RecurringEvent iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p>Repeat</p></span>
+                    </div>
+                    <div class="remaind-me">
+                        <button class="step-button">
+                            <span><i class="icon fontIcon ms-Icon ms-Icon--Attach iconSize-24" aria-hidden="true"></i></span>
+                        </button>
+                        <span><p>Add file</p></span>
+                    </div>
+                    <div class="notes">
+                        <span><input type="text" placeholder="Add Note"/></span>
+                    </div>
+                    <div class="detailFooter">
+                        <div id="closetask" class="closeButton">
+                            <button id="close">
+                                <i class="icon fontIcon ms-Icon ms-Icon--ClosePane iconSize-24" aria-hidden="true"></i>
                             </button>
-                            <span><p id="myday">Added to My Day</p></span>
-                        </div> 
-                        <div class="myday">
-                            <button class="myday-button" onclick="myday()">
-                                <span><i class="icon fontIcon ms-Icon ms-Icon--AlarmClock iconSize-24" aria-hidden="true"></i></span>
-                            </button>
-                            <span><p id="myday">Remaind me</p></span>
-                        </div> 
-                        <div class="myday">
-                            <button class="myday-button">
-                                <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
-                            </button>
-                            <span><p>Add due date</p></span>
                         </div>
-                        <div class="myday">
-                            <button class="myday-button">
-                                <span><i class="icon fontIcon ms-Icon ms-Icon--RecurringEvent iconSize-24" aria-hidden="true"></i></span>
-                            </button>
-                            <span><p>Repeat</p></span>
-                        </div>
-                        <div class="myday">
-                            <button class="myday-button">
-                                <span><i class="icon fontIcon ms-Icon ms-Icon--Attach iconSize-24" aria-hidden="true"></i></span>
-                            </button>
-                            <span><p>Add file</p></span>
-                        </div>
-                        <div class="notes">
-                            <span><input type="text" placeholder="Add Note"/></span>
+                        <div class="deleteTask">
+                            <span>Created Today</span>
+                            <i class="icon fontIcon ms-Icon ms-Icon--Delete iconSize-24" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
