@@ -4,25 +4,25 @@ let listInfo;
 let taskInfo;
 let numberOfList = 0;
 let subId = 0;
-let newList = getElementById("newlist");
-let tasks = getElementById("new-tasks");
-let steps = getElementById("newStep");
-let list = getElementById("list");
+let newList = $("#newlist");
+let tasks = $("#new-tasks");
+let steps = $("#newStep");
+let list = $("#list");
 let stepId = 0;
 
 init();
 
 function init() {
-    addEventListeners(newList, "keyup", createList);
-    addEventListeners(tasks, "keyup", createTask);
-    addEventListeners(steps, "keyup", createStep);
-    addEventListeners(getElementById("listName"), "keyup", updateListName);
-    addEventListeners(getElementById("taskName"), "keyup", updateTaskName);
-    addEventListeners(getElementById("closetask"), "click", closeToggle);
+    addEventListeners($("#newlist"), "keyup", createList);
+    addEventListeners($("#new-tasks"), "keyup", createTask);
+    addEventListeners($("#newStep"), "keyup", createStep);
+    addEventListeners($("#listName"), "keyup", updateListName);
+    addEventListeners($("#taskName"), "keyup", updateTaskName);
+    addEventListeners($("#closetask"), "click", closeToggle);
 }
 
 function addEventListeners(element, action, method) {
-    element.addEventListener(action, method);
+    element.on(action, method);
 }
 
 function getElementById(id) {
@@ -33,11 +33,7 @@ function getElementById(id) {
  * Method used to toggle the sidebar 
  */
 function toggleNavbar() {
-    if (getElementById("sidebar").className == "sidebar toggle-width") {
-        getElementById("sidebar").className = "sidebar toggle-width-open"; 
-    } else {
-        getElementById("sidebar").className = "sidebar toggle-width";
-    }
+    $("#sidebar").toggleClass("sidebar toggle-width-open");
 }
 
 /**
@@ -46,29 +42,29 @@ function toggleNavbar() {
  * @param {*} id 
  */
 function displayLists(list, id) {
-    var div = document.createElement("div");
-    div.className = "list";
-    div.setAttribute("id", id);
-    div.onclick = function(e){getId(id)};
-    var i = document.createElement("i");
-    i.setAttribute("class", "ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor");
-    div.appendChild(i);
-    var p = document.createElement("p");
-    p.setAttribute("id", id);
-    p.textContent = list;
-    div.appendChild(p);
-    getElementById("list").appendChild(div);
+    var div = $(document.createElement("div"));
+    div.attr("class", "list");
+    div.attr("id", id);
+    div.click(function(e) {getId(id)});
+    var i = $(document.createElement("i"));
+    i.attr("class", "ms-Icon ms-Icon--BulletedList2 iconSize-24 listcolor");
+    div.append(i);
+    var p = $(document.createElement("p"));
+    p.attr("id", id);
+    p.text(list);
+    div.append(p);
+    $("#list").append(div);
 }
     
 /**
  * Method used to create the new list and push it in the array
  */
 function createList() {
-    getElementById("subtasklist").innerHTML = "";
+    $("#subtasklist").empty();
     subTask = [];
     if(event.keyCode == 13) {
         let listObject = {
-            name: newList.value,
+            name: newList.val(),
             status: true,
             id: "li" + ++numberOfList,
             subTask: subTask
@@ -77,7 +73,7 @@ function createList() {
             LIST.push(listObject);
             displayLists(listObject.name, listObject.id);
         }
-        newList.value = "";
+        newList.val("");
         listName(listObject);
     }
 };
@@ -86,12 +82,10 @@ function createList() {
  * Method used to update the list Name
  */
 function updateListName() {
-    let updatedListName = getElementById("listName").value;
+    let updatedListName = $("#listName").val();
     if(event.keyCode === 13) {
         listInfo.name = updatedListName;
-        while (list.firstChild) {
-            list.removeChild(list.firstChild);
-        }
+        list.empty();
         for(var i=0; i<LIST.length; i++) {
             displayLists(LIST[i].name, LIST[i].id);
         }
@@ -102,17 +96,72 @@ function updateListName() {
  * Method used to get the list by using the listId
  */
 function getId(listId) {
+    listName(getSelectedList(listId));
+}
+
+/**
+ * Method used to return the list object in the particular id
+ */
+function getSelectedList(id) {
     for(let i=0; i<LIST.length; i++) {
-        if(LIST[i].id == listId) {
-            listName(LIST[i]);
+        if(LIST[i].id == id) {
+            return LIST[i];
         }
     }
 }
 
 function listName (listObject) {
-    getElementById("listName").value = listObject.name;
+    $("#listName").val(listObject.name);
     listInfo = listObject;
     getSublist(listObject.subTask);    
+}
+
+/**
+ * Method used to get the list of Task for the given list
+ * @param {} subTasks 
+ */
+function getSublist(subTasks) {
+    $("#subtasklist").empty("");
+    displayTask(subTasks);
+}
+
+function displayTask(subTasks) {
+    for(let j=0; j<subTasks.length; j++) {
+        displaySubTasks(subTasks[j]);
+    }
+}
+/**
+ * Method used to display the taskList for the given list
+ * @param {get the value of taskName} subTaskName 
+ * @param {get the value of task ID} id 
+ */
+function displaySubTasks(task) {
+    let div = $(document.createElement("div"));
+    div.attr("class", "subtask-div");
+    div.click(function(e){toggleStep()});
+    let inputDiv = $(document.createElement("div"));
+    inputDiv.attr("class", "task-checkbox");
+    let checkbox = $(document.createElement("input"));
+    checkbox.attr("type", "checkbox");
+    checkbox.attr("task", task);
+    checkbox.click(function(e){checkStatus(task)});
+    inputDiv.append(checkbox);
+    div.append(inputDiv);
+    let text = $(document.createElement("div"));
+    text.attr("id", "taskNameList");
+    let p = $(document.createElement("p"));
+    if(task.status) {
+        p.attr("class", "taskText-div");
+    } else {
+        p.attr("class", "taskText-div-p");
+    }
+    p.attr("id", task.subTaskId);
+    p.attr("name", "taskNameList");
+    p.click(function(e){getTaskId(task.subTaskId)});
+    p.text(task.name);
+    text.append(p);
+    div.append(text);
+    $("#subtasklist").append(div); 
 }
 
 /**
@@ -123,95 +172,105 @@ function createTask() {
         taskId = ++subId;
         stepList = [];
         let newTask = {
-            name: tasks.value,
+            name: tasks.val(),
             subTaskId: "task" + taskId,
             status: true,
             stepList: stepList
         };
         listInfo.subTask.push(newTask);
         displaySubTasks(newTask);
-        tasks.value = "";
+        tasks.val("");
         taskName(newTask);
     }
 };
 
 function taskName (taskObject) {
     if(taskObject.status) {
-        getElementById("taskName").className = "task-name";
+        $("#taskName").attr("class", "task-name");
     } else {
-        getElementById("taskName").className = "task-name t-n-l";
+        $("#taskName").attr("class", "task-name t-n-l");
     }
-    getElementById("taskName").value = taskObject.name;
+    $("#taskName").val(taskObject.name);
     taskInfo = taskObject;
     getStepsOfTask(taskObject.stepList);
 }
 
-function updateTaskName() {
-    let updatedTaskName = getElementById("taskName").value;
-    if(event.keyCode === 13) {
-        taskInfo.name = updatedTaskName;
-        while (subtasklist.firstChild) {
-            subtasklist.removeChild(subtasklist.firstChild);
-        }
-        for(let j=0; j<listInfo.subTask.length; j++) {
-            displaySubTasks(subTask[j]);
-        }
+/**
+ * Method used to display the set of steps for the given list
+ * @param {*} steps 
+ */
+function getStepsOfTask(steps) {
+    $("#steps").text("");
+    for(let j=0; j<steps.length; j++) {
+        displaySteps(steps[j]);
     }
 }
+
 /**
- * Method used to display the taskList for the given list
- * @param {get the value of taskName} subTaskName 
- * @param {get the value of task ID} id 
+ * Method used to display the list of steps for the specific task in the list
+ * @param {*} stepName 
+ * @param {*} id 
  */
-function displaySubTasks(task) {
-    let div = document.createElement("div");
-    div.className = "subtask-div";
-    div.setAttribute("onclick", `toggleStep()`);
-    let inputDiv = document.createElement("div");
-    inputDiv.className = "task-checkbox";
-    let checkbox = document.createElement("input");
-    checkbox.setAttribute("type", "checkbox");
-    checkbox.setAttribute("task", task);
-    checkbox.onclick = function(e){checkStatus(task)};
-    inputDiv.appendChild(checkbox);
-    div.appendChild(inputDiv);
-    let text = document.createElement("div");
-    text.setAttribute("id", "taskNameList");
-    let p = document.createElement("p");
-    if(task.status) {
-        p.className = "taskText-div";
+function displaySteps(step) {
+    let div = $(document.createElement("div"));
+    if(step.status) {
+        div.attr("class", "steps");
     } else {
-        p.className = "taskText-div-p";
+        div.attr("class", "steps-line-through");
     }
-    p.setAttribute("id", task.subTaskId);
-    p.setAttribute("name", "taskNameList");
-    p.onclick = function(e){getTaskId(task.subTaskId)};
-    p.textContent = task.name;
-    text.appendChild(p);
-    div.appendChild(text);
-    getElementById("subtasklist").appendChild(div); 
+    div.attr("id", step.id);
+    let span = $(document.createElement("span"));
+    let image = $(document.createElement("img"));
+    image.attr("src", "images/circle.svg");
+    image.attr("id", step.id);
+    image.attr("name", "step-check");
+    image.click(function(e){strikeOutStep(step.id)});
+    span.append(image);
+    div.append(span);
+    let text = $(document.createElement("input"));
+    text.attr("type", "text");
+    text.val(step.name);
+    text.attr("id", step.id);
+    div.append(text);
+    let i = $(document.createElement("i"));
+    i.attr("class", "icon fontIcon ms-Icon ms-Icon--Cancel iconSize-16");
+    div.append(i);
+    $("#steps").append(div);
+}
+
+function updateTaskName() {
+    let updatedTaskName = $("#taskName").val();
+    if(event.keyCode === 13) {
+        taskInfo.name = updatedTaskName;
+        $("#subtasklist").empty();
+        displayTask(listInfo.subTask);
+    }
 }
 
 function checkStatus(task) {
-    console.log(task);
     if(!task.status) {
         task.status = true;
     } else {
         task.status = false;
     }
-    while (subtasklist.firstChild) {
-        subtasklist.removeChild(subtasklist.firstChild);
-    }
-    for(let i=0; i<listInfo.subTask.length; i++) {
-        displaySubTasks(listInfo.subTask[i]);
-    }
+    $("#subtasklist").empty();
+    displayTask(listInfo.subTask);
+    strikeTaskName(task);
 }
 
 function strikeTaskName(task) {
-    if(document.getElementById("taskName").value == task.name) {
-        document.getElementById("taskName").className = "task-name t-n-l";
+    if($("#taskName").val() == task.name) {
+        if(!taskInfo.status) {
+            $("#taskName").attr("class", "task-name t-n-l");
+        }  else {
+            $("#taskName").attr("class", "task-name");
+        }
     } else {
-        document.getElementById("taskName").className = "task-name";
+        if(!taskInfo.status) {
+            $("#taskName").attr("class", "task-name t-n-l");
+        }  else {
+            $("#taskName").attr("class", "task-name");
+        }
     }
 }
 
@@ -220,21 +279,14 @@ function strikeTaskName(task) {
  * @param {Get the value of Id} id 
  */
 function getTaskId(id) {
-    for(var index = 0; index<listInfo.subTask.length; index++) {
-        if(id == listInfo.subTask[index].subTaskId) {
-            taskName(listInfo.subTask[index]);
-        }
-    }
+    taskName(getTaskById(id));
 }
 
-/**
- * Method used to display the set of steps for the given list
- * @param {*} steps 
- */
-function getStepsOfTask(steps) {
-    getElementById("steps").textContent = "";
-    for(let j=0; j<steps.length; j++) {
-        displaySteps(steps[j]);
+function getTaskById(id) {
+    for(var index = 0; index<listInfo.subTask.length; index++) {
+        if(id == listInfo.subTask[index].subTaskId) {
+            return listInfo.subTask[index];
+        }
     }
 }
 
@@ -243,6 +295,7 @@ function getStepsOfTask(steps) {
  * @param {} subId 
  */
 function toggleStep(){
+    
     if(getElementById("step-aside").className == "finalDiv w-0") {
         getElementById("step-aside").className = "finalDiv w-360"
     } else {
@@ -258,73 +311,20 @@ function closeToggle() {
     }
 }
 
-/**
- * Method used to get the steps by using the step Id
- * @param {*} id 
- */
-function getSteps(id) {
-    for(let l=0; l<listInfo.subtasks.length; l++) {
-        if(listInfo.subTask[l].subTaskId == id) {
-            getElementById("subtask").textContent = listInfo.subtask.name;
-        }
-    }
-}
-
-/**
- * Method used to get the list of Task for the given list
- * @param {} subTasks 
- */
-function getSublist(subTasks) {
-    let subTaskList = getElementById("subtasklist");
-    subTaskList.innerHTML = "";
-    for(let j=0; j<subTasks.length; j++) {
-        displaySubTasks(subTasks[j]);
-    }
-}
 
 /* Method used to create the steps for the particular task  */
 function createStep() {
     if(event.keyCode == 13) {
         let newStep = {
-            name: steps.value,
+            name: steps.val(),
             status: true,
-            id: ++stepId + "step"
+            id: "step" + ++stepId 
         };
         taskInfo.stepList.push(newStep);
         displaySteps(newStep);
-        steps.value="";
+        steps.val("");
     }
 };
-
-/**
- * Method used to display the list of steps for the specific task in the list
- * @param {*} stepName 
- * @param {*} id 
- */
-function displaySteps(step) {
-    let div = document.createElement("div");
-    if(step.status) {
-        div.className = "steps";
-    } else {
-        div.className = "steps-line-through";
-    }
-    div.setAttribute("id", step.id);
-    let span = document.createElement("span");
-    let input = document.createElement("input");
-    input.setAttribute("type", "checkbox");
-    input.onclick = function(e){strikeOutStep(step.id)};
-    span.appendChild(input);
-    div.appendChild(span);
-    let text = document.createElement("input");
-    text.setAttribute("type", "text");
-    text.value = step.name;
-    text.setAttribute("id", step.id);
-    div.appendChild(text);
-    let i = document.createElement("i");
-    i.setAttribute("class", "icon fontIcon ms-Icon ms-Icon--Cancel iconSize-16");
-    div.appendChild(i);
-    getElementById("steps").appendChild(div);
-}
 
 function strikeOutStep(id) {
     let currentStep;
@@ -338,13 +338,20 @@ function strikeOutStep(id) {
     } else {
         currentStep.status = true;
     }
+    $("#steps").empty();
+    displayStep(taskInfo.stepList);
     strikeTask(currentStep.status, currentStep.id);
+}
+function displayStep(stepLists) {
+    for(let step of stepLists) {
+        displaySteps(step);
+    }
 }
 
 function strikeTask(status, id) {
     if(status) {
-        document.getElementById(id).className = "steps";
+        $(id).attr("class", "steps");
     } else {
-        document.getElementById(id).className = "steps-line-through";
+        $(id).attr("class", "steps-line-through");
     }
 }

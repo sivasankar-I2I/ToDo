@@ -53,6 +53,7 @@ body {
 }
 .toggle-width-open {
     width: 290px;
+    background-color: #f4f4f4;
 }
 .createlist{
     width: 290px;
