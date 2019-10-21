@@ -85,7 +85,7 @@
                         <span><input id="newlist" type="text" placeholder="New list"/></span>
                     </div>    
                 </div>
-                <div class="page" >
+                <div class="page" id="page">
                     <div class="center-page-header">
                         <div class="center-Page">
                             <input type="text" id="listName"/>
@@ -115,54 +115,57 @@
                         <span><input id="new-tasks" type="text" placeholder="Add Tasks"/></span>
                     </div>
                 </div>
-                <div class="finalDiv w-0" id="step-aside">
-                    <div class="nameTag">
-                        <div class="stepName strike-out">
-                            <div class="check-Box"><input type="checkbox" id="taskNameCheckBox"/></div>
-                            <div><input type="text" id="taskName" class="task-name"/></div>
+                <div class="finalDiv" id="step-aside">
+                    <div class="header">
+                        <div class="nameTag">
+                            <div class="stepName strike-out">
+                                <div class="check-Box"><image id="taskNameCheckBox"/></div>
+                                <div><input type="text" id="taskName" class="task-name"/></div>
+                                <div class="p-t-14 white"><i class="icon fontIcon ms-Icon ms-Icon--FavoriteStar iconSize-20" aria-hidden="true"></i></div>
+                            </div>
+                            <div id="new-Steps">  
+                                <ul id="steps"></ul>
+                            </div>
+                            <div class="step">
+                                <button class="step-button">
+                                    <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                                </button>
+                                <span><input id="newStep" type="text" placeholder="Next Step"/></span>
+                            </div>
                         </div>
-                        <div id="new-Steps"> 
-                            <ul id="steps"></ul>
-                        </div>
-                        <div class="step">
+                        <div class="myday-added">
                             <button class="step-button">
-                                <span><i id="home" class="icon fontIcon ms-Icon ms-Icon--Add iconSize-24" aria-hidden="true"></i></span>
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
                             </button>
-                            <span><input id="newStep" type="text" placeholder="Next Step"/></span>
+                            <span><p id="myday">Added to My Day</p></span>
                         </div>
-                    </div>
-                    <div class="myday-added">
-                        <button class="step-button">
-                            <span><i class="icon fontIcon ms-Icon ms-Icon--Sunny iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <span><p id="myday">Added to My Day</p></span>
-                    </div>
-                    <div class="remaind-me">
-                        <button class="step-button" onclick="myday()">
-                            <span><i class="icon fontIcon ms-Icon ms-Icon--AlarmClock iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <span><p id="myday">Remind me</p></span>
-                    </div> 
-                    <div class="myday-added">
-                        <button class="step-button">
-                            <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <span><p>Add due date</p></span>
-                    </div>
-                    <div class="myday-added">
-                        <button class="step-button">
-                            <span><i class="icon fontIcon ms-Icon ms-Icon--RecurringEvent iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <span><p>Repeat</p></span>
-                    </div>
-                    <div class="remaind-me">
-                        <button class="step-button">
-                            <span><i class="icon fontIcon ms-Icon ms-Icon--Attach iconSize-24" aria-hidden="true"></i></span>
-                        </button>
-                        <span><p>Add file</p></span>
-                    </div>
-                    <div class="notes">
-                        <span><input type="text" placeholder="Add Note"/></span>
+                        <div class="remaind-me">
+                            <button class="step-button" onclick="myday()">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--AlarmClock iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p id="myday">Remind me</p></span>
+                        </div> 
+                        <div class="myday-added">
+                            <button class="step-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Calendar iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Add due date</p></span>
+                        </div>
+                        <div class="myday-added">
+                            <button class="step-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--RecurringEvent iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Repeat</p></span>
+                        </div>
+                        <div class="remaind-me">
+                            <button class="step-button">
+                                <span><i class="icon fontIcon ms-Icon ms-Icon--Attach iconSize-24" aria-hidden="true"></i></span>
+                            </button>
+                            <span><p>Add file</p></span>
+                        </div>
+                        <div class="notes">
+                            <span><input type="text" placeholder="Add Note"/></span>
+                        </div>
                     </div>
                     <div class="detailFooter">
                         <div id="closetask" class="closeButton">
